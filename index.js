@@ -4,7 +4,7 @@ import DBcon from "./utils/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
-// import AuthRoutes from "./routes/Auth.js";
+import AuthRoutes from "./routes/Auth.js";
 // import BlogsRoutes from "./routes/Blog.js";
 // import PublicRoutes from "./routes/Public.js";
 
@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 
 app.use(cookieParser());
 
-// app.use("/auth", AuthRoutes);
+app.use("/auth", AuthRoutes);
 // app.use("/blog", BlogsRoutes);
 // app.use("/public", PublicRoutes);
 
