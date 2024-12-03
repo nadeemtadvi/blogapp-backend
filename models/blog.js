@@ -3,18 +3,15 @@ import mongoose from "mongoose";
 const PostSchema = new mongoose.Schema(
   {
     title: {
-      type: String,
+      type: String,required:true
     },
     desc: {
-      type: String,
+      type: String,required:true
     },
     image: {
-      type: String,
+      type: String,required:true
     },
-    comments:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"comments",
-    }]
+   
     
   },
   { timestamps: true }

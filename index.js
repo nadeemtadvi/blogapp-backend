@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
 import AuthRoutes from "./routes/Auth.js";
-// import BlogsRoutes from "./routes/Blog.js";
+import BlogsRoutes from "./routes/Blog.js";
 // import PublicRoutes from "./routes/Public.js";
 
 dotenv.config();
@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 app.use(cookieParser());
 
 app.use("/auth", AuthRoutes);
-// app.use("/blog", BlogsRoutes);
+app.use("/blog", BlogsRoutes);
 // app.use("/public", PublicRoutes);
 
 app.listen(PORT, () => {

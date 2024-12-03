@@ -4,24 +4,26 @@ import path from "path";
 
 const Create = async (req, res) => {
   try {
-    const { title, desc } = req.body;
-    if (!req.file) {
+    const { title, desc, image } = req.body;
+
+    // Check if required fields are present
+    if (!title || !desc || !image) {
       return res.status(400).json({
         success: false,
-        message: "Image is required",
+        message: "Title, description, and image are required",
       });
     }
-    const imagePath = req.file.filename;
 
     const CreateBlog = new PostModel({
       title,
       desc,
-      image: imagePath,
+      image, // Assigning from req.body
     });
+
     await CreateBlog.save();
     return res.status(200).json({
       success: true,
-      message: "Post created succesfully",
+      message: "Post created successfully",
       post: CreateBlog,
     });
   } catch (error) {
@@ -33,6 +35,7 @@ const Create = async (req, res) => {
   }
 };
 
+
 const Delete = async (req, res) => {
   try {
     const postid = req.params.id;
@@ -43,13 +46,13 @@ const Delete = async (req, res) => {
         message: "Post Not Found",
       });
     }
-    if (FindPost.image) {
-      const profilepath = path.join("public/images", FindPost.image);
-      fs.promises
-        .unlink(profilepath)
-        .then(() => console.log("Post image deleted "))
-        .catch((error) => console.log("error deleting post image ", error));
-    }
+    // if (FindPost.image) {
+    //   const profilepath = path.join("public/images", FindPost.image);
+    //   fs.promises
+    //     .unlink(profilepath)
+    //     .then(() => console.log("Post image deleted "))
+    //     .catch((error) => console.log("error deleting post image ", error));
+    // }
     const deletpost = await PostModel.findByIdAndDelete(postid);
     return res.status(200).json({
       success: true,
@@ -88,7 +91,7 @@ const getpost = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const { title, desc } = req.body;
+    const { title, desc, image } = req.body;
     const postid = req.params.id;
 
     const updatepost = await PostModel.findById(postid);
@@ -104,8 +107,8 @@ const update = async (req, res) => {
     if (desc) {
       updatepost.desc = desc;
     }
-    if (req.file) {
-      updatepost.image = req.file.filename;
+    if (image) {
+      updatepost.image = image;
     }
     await updatepost.save();
     return res.status(200).json({
