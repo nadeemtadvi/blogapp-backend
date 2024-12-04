@@ -18,6 +18,7 @@ DBcon();
 app.use(express.json());
 app.use(express.static('public'));
 app.use(bodyParser.json());
+app.use(express.urlencoded({extended:false}))
 
 const corsOptoins={
   origin:true,

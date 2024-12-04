@@ -4,20 +4,29 @@ import path from "path";
 
 const Create = async (req, res) => {
   try {
-    const { title, desc, image } = req.body;
-
-    // Check if required fields are present
-    if (!title || !desc || !image) {
+    const { title, desc } = req.body;
+    console.log("Request body:", req.body); 
+    console.log("Request file:", req.file); 
+    if (!title || !desc) {
+      console.log("Missing title or description"); 
       return res.status(400).json({
         success: false,
         message: "Title, description, and image are required",
       });
     }
+    if (!req.file) {
+      console.log("No image file provided");
+      return res.status(400).json({
+        success: false,
+        message: "Image is required",
+      });
+    }
+    const imagePath = req.file.filename;
 
     const CreateBlog = new PostModel({
       title,
       desc,
-      image, // Assigning from req.body
+      image: imagePath,
     });
 
     await CreateBlog.save();
@@ -35,7 +44,6 @@ const Create = async (req, res) => {
   }
 };
 
-
 const Delete = async (req, res) => {
   try {
     const postid = req.params.id;
@@ -46,13 +54,13 @@ const Delete = async (req, res) => {
         message: "Post Not Found",
       });
     }
-    // if (FindPost.image) {
-    //   const profilepath = path.join("public/images", FindPost.image);
-    //   fs.promises
-    //     .unlink(profilepath)
-    //     .then(() => console.log("Post image deleted "))
-    //     .catch((error) => console.log("error deleting post image ", error));
-    // }
+    if (FindPost.image) {
+      const profilepath = path.join("public/images", FindPost.image);
+      fs.promises
+        .unlink(profilepath)
+        .then(() => console.log("Post image deleted "))
+        .catch((error) => console.log("error deleting post image ", error));
+    }
     const deletpost = await PostModel.findByIdAndDelete(postid);
     return res.status(200).json({
       success: true,
