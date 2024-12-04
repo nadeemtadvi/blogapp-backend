@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 
 const Register = async (req, res) => {
   try {
-    // console.log("Request Body:", req.body);
 
     const { fullName, email, password } = req.body;
 

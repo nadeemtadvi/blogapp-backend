@@ -5,22 +5,19 @@ import path from "path";
 const Create = async (req, res) => {
   try {
     const { title, desc } = req.body;
-    console.log("Request body:", req.body); 
-    console.log("Request file:", req.file); 
     if (!title || !desc) {
-      console.log("Missing title or description"); 
       return res.status(400).json({
         success: false,
         message: "Title, description, and image are required",
       });
     }
     if (!req.file) {
-      console.log("No image file provided");
       return res.status(400).json({
         success: false,
         message: "Image is required",
       });
     }
+   
     const imagePath = req.file.filename;
 
     const CreateBlog = new PostModel({
@@ -37,6 +34,7 @@ const Create = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating post:", error);
+    
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -55,7 +53,7 @@ const Delete = async (req, res) => {
       });
     }
     if (FindPost.image) {
-      const profilepath = path.join("public/images", FindPost.image);
+      const profilepath = path.join("upload/", FindPost.image);
       fs.promises
         .unlink(profilepath)
         .then(() => console.log("Post image deleted "))
@@ -99,7 +97,7 @@ const getpost = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const { title, desc, image } = req.body;
+    const { title, desc } = req.body;
     const postid = req.params.id;
 
     const updatepost = await PostModel.findById(postid);
@@ -115,8 +113,8 @@ const update = async (req, res) => {
     if (desc) {
       updatepost.desc = desc;
     }
-    if (image) {
-      updatepost.image = image;
+    if (req.file) {
+      updatepost.image = req.file.filename;
     }
     await updatepost.save();
     return res.status(200).json({

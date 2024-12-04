@@ -6,7 +6,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import AuthRoutes from "./routes/Auth.js";
 import BlogsRoutes from "./routes/Blog.js";
-// import PublicRoutes from "./routes/Public.js";
+import PublicRoutes from "./routes/Public.js";
 
 dotenv.config();
 
@@ -34,7 +34,7 @@ app.use(cookieParser());
 
 app.use("/auth", AuthRoutes);
 app.use("/blog", BlogsRoutes);
-// app.use("/public", PublicRoutes);
+app.use("/public", PublicRoutes);
 
 app.listen(PORT, () => {
   console.log(`app is running on ${PORT}`);

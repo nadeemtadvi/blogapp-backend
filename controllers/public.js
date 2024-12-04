@@ -3,12 +3,7 @@ import PostModel from "../models/blog.js";
 const Getsinglepost = async (req, res) => {
   try {
     const postid = req.params.id;
-    const Findpost = await PostModel.findById(postid).populate({
-      path: "comments",
-      populate: {
-        path: "userId",
-      },
-    });
+    const Findpost = await PostModel.findById(postid)
 
     if (!Findpost) {
         return res.status(404).json({
