@@ -1,4 +1,6 @@
 import express from "express";
+import path from 'path';
+
 import dotenv from "dotenv";
 import DBcon from "./utils/db.js";
 import cookieParser from "cookie-parser";
@@ -16,9 +18,14 @@ DBcon();
 
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('upload'));
 app.use(bodyParser.json());
 app.use(express.urlencoded({extended:false}))
+app.use(cookieParser());
+
+app.get("/", (req, res) => {
+  res.send("Backend ");
+});
 
 const corsOptoins={
   origin:true,
@@ -26,11 +33,7 @@ const corsOptoins={
 }
 app.use(cors(corsOptoins))
 
-app.get("/", (req, res) => {
-  res.send("Backend ");
-});
 
-app.use(cookieParser());
 
 app.use("/auth", AuthRoutes);
 app.use("/blog", BlogsRoutes);
