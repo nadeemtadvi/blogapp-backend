@@ -163,4 +163,25 @@ const updateProfile = async (req, res) => {
   }
 };
 
-export { Register, Login, Logout, updateProfile };
+const getUser = async (req, res) => {
+  try {
+    const Users = await UserModel.find();
+
+    if (!Users) {
+      return res.status(404).json({
+        success: false,
+        message: "UserData not Found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      Users,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+export { Register, Login, Logout, updateProfile, getUser };

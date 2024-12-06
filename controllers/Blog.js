@@ -102,7 +102,7 @@ const update = async (req, res) => {
 
     const updatepost = await PostModel.findById(postid);
     if (!updatepost) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         message: "Post Not Found",
       });
@@ -128,5 +128,8 @@ const update = async (req, res) => {
     });
   }
 };
+
+
+
 
 export { Create, Delete, getpost, update };
