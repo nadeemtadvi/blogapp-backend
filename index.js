@@ -1,6 +1,5 @@
 import express from "express";
 import path from 'path';
-
 import dotenv from "dotenv";
 import DBcon from "./utils/db.js";
 import cookieParser from "cookie-parser";
@@ -9,8 +8,11 @@ import bodyParser from "body-parser";
 import AuthRoutes from "./routes/Auth.js";
 import BlogsRoutes from "./routes/Blog.js";
 import PublicRoutes from "./routes/Public.js";
+import Textrouter from "./routes/GenerateText.js";
+
 
 dotenv.config();
+
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -38,6 +40,7 @@ app.use(cors(corsOptoins))
 app.use("/auth", AuthRoutes);
 app.use("/blog", BlogsRoutes);
 app.use("/public", PublicRoutes);
+app.use("/ai",Textrouter);
 
 app.listen(PORT, () => {
   console.log(`app is running on ${PORT}`);
